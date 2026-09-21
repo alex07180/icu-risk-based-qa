@@ -1,0 +1,70 @@
+name: Risk-Based QA Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ---------------------------------------------------------------
+  # GATE JOB: runs ONLY the critical_risk_p1 tests first.
+  # If any of these fail, the pipeline stops here -- the full_suite
+  # job below will not run at all, simulating "deployment halted."
+  # ---------------------------------------------------------------
+  critical_risk_gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install pytest pytest-playwright
+          playwright install --with-deps chromium
+
+      - name: Run CRITICAL risk tests only
+        run: pytest -m critical_risk_p1 -v
+
+      # This step only runs if the step above failed (a critical test
+      # failed). It opens a GitHub Issue automatically, simulating an
+      # emergency engineering escalation/alert.
+      - name: Open P1 incident issue on critical failure
+        if: failure()
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "🚨 P1 CRITICAL RISK TEST FAILURE — deployment halted"
+          content-filepath: .github/P1_INCIDENT_TEMPLATE.md
+          labels: |
+            critical
+            P1-incident
+            automated-alert
+
+  # ---------------------------------------------------------------
+  # FULL SUITE JOB: only runs if critical_risk_gate passed
+  # (see "needs:" below). This is what makes the gate a real gate.
+  # ---------------------------------------------------------------
+  full_suite:
+    needs: critical_risk_gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install pytest pytest-playwright
+          playwright install --with-deps chromium
+
+      - name: Run full risk-tiered test suite
+        run: pytest -v
