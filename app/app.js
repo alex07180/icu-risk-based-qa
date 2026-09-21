@@ -48,8 +48,7 @@ function checkAlarmState(patientId, vitals) {
   // with a normal heart rate (exactly the critical_spo2 scenario above)
   // will NOT trigger a critical alarm. This is the catastrophic silent
   // failure this project's risk-based test suite is designed to catch.
-  const spo2Critical = vitals.spo2 < 90;
-  // Correct version would be: const spo2Critical = vitals.spo2 < 90;
+  const spo2Critical = vitals.spo2 < 90 && vitals.hr > 150; // Correct version would be: const spo2Critical = vitals.spo2 < 90;
 
   const spo2Warning = !spo2Critical && vitals.spo2 < 94;
 
