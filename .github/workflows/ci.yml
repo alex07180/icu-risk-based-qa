@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  issues: write
+  contents: read
+
 jobs:
   # ---------------------------------------------------------------
   # GATE JOB: runs ONLY the critical_risk_p1 tests first.
