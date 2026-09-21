@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ICU Central Monitoring Dashboard (Simulated)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>ICU Central Monitoring — Simulated Dashboard</h1>
+    <div class="scenario-controls">
+      <label for="scenario-select">Load Scenario:</label>
+      <select id="scenario-select">
+        <option value="normal">Normal — all patients stable</option>
+        <option value="warning">Warning — Patient B elevated HR</option>
+        <option value="critical_hr">Critical — Patient A cardiac arrest (HR)</option>
+        <option value="critical_spo2">Critical — Patient C desaturation (SpO2)</option>
+        <option value="theme_toggle_only">UI-only — theme toggle (no clinical change)</option>
+      </select>
+      <button id="load-scenario-btn">Load</button>
+      <button id="theme-toggle-btn">Toggle Theme (low-risk feature)</button>
+    </div>
+  </header>
+
+  <main id="patient-grid">
+    <!-- Patient cards injected by app.js -->
+  </main>
+
+  <div id="alarm-banner-region"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
