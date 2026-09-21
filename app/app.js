@@ -48,7 +48,7 @@ function checkAlarmState(patientId, vitals) {
   // with a normal heart rate (exactly the critical_spo2 scenario above)
   // will NOT trigger a critical alarm. This is the catastrophic silent
   // failure this project's risk-based test suite is designed to catch.
-  const spo2Critical = vitals.spo2 < 90 && vitals.hr > 150;
+  const spo2Critical = vitals.spo2 < 90;
   // Correct version would be: const spo2Critical = vitals.spo2 < 90;
 
   const spo2Warning = !spo2Critical && vitals.spo2 < 94;
@@ -79,9 +79,15 @@ function renderDashboard(scenarioKey) {
     card.setAttribute("data-testid", `patient-card-${patientId}`);
     card.innerHTML = `
       <h3>Patient ${patientId}</h3>
-      <div class="vital-row"><span>Heart Rate</span><span data-testid="hr-${patientId}">${vitals.hr} bpm</span></div>
-      <div class="vital-row"><span>SpO2</span><span data-testid="spo2-${patientId}">${vitals.spo2}%</span></div>
-      <div class="vital-row"><span>BP</span><span data-testid="bp-${patientId}">${vitals.bp}</span></div>
+      <div class="vital-row"><span>Heart Rate</span><span data-testid="hr-${patientId}">${
+      vitals.hr
+    } bpm</span></div>
+      <div class="vital-row"><span>SpO2</span><span data-testid="spo2-${patientId}">${
+      vitals.spo2
+    }%</span></div>
+      <div class="vital-row"><span>BP</span><span data-testid="bp-${patientId}">${
+      vitals.bp
+    }</span></div>
       <div class="vital-row"><span>Status</span><span data-testid="status-${patientId}">${alarm.level.toUpperCase()}</span></div>
     `;
     grid.appendChild(card);
@@ -91,7 +97,9 @@ function renderDashboard(scenarioKey) {
       banner.className = `alarm-banner ${alarm.level}`;
       banner.setAttribute("data-testid", `alarm-banner-${patientId}`);
       banner.innerHTML = `
-        ${alarm.level.toUpperCase()} ALARM — Patient ${patientId}: ${alarm.reason}
+        ${alarm.level.toUpperCase()} ALARM — Patient ${patientId}: ${
+        alarm.reason
+      }
         <button class="acknowledge-btn" data-testid="ack-btn-${patientId}">Acknowledge</button>
       `;
       bannerRegion.appendChild(banner);
