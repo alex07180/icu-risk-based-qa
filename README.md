@@ -76,6 +76,6 @@ clinical validation with real users.
 
 ## Author
 
-[Your Name] — QA Engineer (4 years, fintech) transitioning into medical
+[Alex Peelipose] — QA Engineer (4 years, fintech) transitioning into medical
 device QA / regulatory affairs, currently pursuing an MSc in Biomedical
 Engineering at Ulm University, Germany.
